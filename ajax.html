@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.8.3.min.js"></script>
+</head>
+<body>
+ <select name="" id="type">
+     <option value="">请选择物流公司</option>
+     <option value="shentong">申通</option>
+     <option value="yuantong">圆通</option>
+     <option value="zhongtong">中通</option>
+     <option value="shunfeng">顺丰</option>
+     <option value="yunda">韵达</option>
+     <option value="ems">EMS</option>
+ </select>
+物流单号：<input type="text" name="" id="postid">
+ <button id="btn">查询</button>
+<div id="result">
+
+
+</div>
+
+
+</body>
+   <script>
+       $("#btn").click(function(){
+           //获取物流公司的运单号和公司的值
+           var type=$("#type").val();
+           var postid=$("#postid").val();
+           //验证值是否合法
+           if(type==''||postid==''){
+               alert('请选择物流公司或运单号不可为空');
+               return false;
+           }
+
+          //发送post请求 $.post(); $.post(url,[data],[callback],[type])
+
+           $.post('ajax.php',{"type":type,"postid":postid},function(data){
+               console.log(data);
+          if(data.message=='ok'){
+              var info=data.data;
+               var ss='';
+              $.each(info,function(v,k){
+                  ss += '<p>时间：' +this.time + ',地点:' + this.context+'</p>';
+
+              })
+                $("#result").html(ss);
+              }else{
+              $("#result").html(data.message);
+          }
+           },'json');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       });
+
+   </script>
+
+</html>
